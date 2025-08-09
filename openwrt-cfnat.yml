@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   openwrt:
-    image: accel.good.us.kg/honyua/openwrt:latest
+    image: honyua/openwrt:latest
     container_name: openwrt
     restart: always
     command: /sbin/init
@@ -16,7 +16,7 @@ services:
         ipv4_address: 192.168.1.35  # 替换为你的局域网IP段内地址
   cfnat:
     container_name: mycfnat
-    image: accel.good.us.kg/cmliu/cfnat:latest
+    image: cmliu/cfnat:latest
     environment:
       - colo=SJC  # 筛选数据中心例如 HKG,SJC,LAX.电信/联通 推荐 SJC,LAX.移动/广电 推荐 HKG"
       - delay=300  # 有效延迟（毫秒），超过此延迟将断开连接

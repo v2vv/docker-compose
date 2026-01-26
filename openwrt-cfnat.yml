@@ -12,7 +12,7 @@ services:
     volumes:
       - /var/run/docker.sock:/root/docker.sock
     networks:
-      ipvlan_net:
+      macvlan_net:
         ipv4_address: 192.168.1.35  # 替换为你的局域网IP段内地址
   cfnat:
     container_name: mycfnat
@@ -30,18 +30,17 @@ services:
       - code=200  # HTTP/HTTPS 响应状态码
       - domain=cloudflaremirrors.com/debian # 响应状态码检查的域名地址
     networks:
-      ipvlan_net:
+      macvlan_net:
         ipv4_address: 192.168.1.36  # 替换为你的局域网IP段内地址
     ports:
       - "1234:1234"  # 将主机的 1234 端口映射到容器的 1234 端口
     restart: always
 
 networks:
-  ipvlan_net:
-    driver: ipvlan
+  macvlan_net:
+    driver: macvlan
     driver_opts:
       parent: eth0  # 替换为你的宿主机物理网卡名
-      ipvlan_mode: l2
     ipam:
       config:
         - subnet: 192.168.1.0/24   # 替换为你局域网的网段

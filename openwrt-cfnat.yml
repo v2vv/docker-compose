@@ -16,7 +16,7 @@ services:
         ipv4_address: 192.168.1.35  # 替换为你的局域网IP段内地址
   cfnat:
     container_name: mycfnat
-    image: lvhonyua/cfnat:latest
+    image: honyua/cfnat:latest
     environment:
       - colo=HKG  # 筛选数据中心例如 HKG,SJC,LAX.电信/联通 推荐 SJC,LAX.移动/广电 推荐 HKG"
       - delay=200  # 有效延迟（毫秒），超过此延迟将断开连接

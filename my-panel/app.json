@@ -1,0 +1,32 @@
+{
+  "name": "my-panel",
+  "title": "My-Panel / BastionSSH 网关",
+  "category": "DevOps",
+  "version": "latest",
+  "description": "专为现代运维打造的极轻量 SSH / WebTTY 网关与 Docker 容器管理控制台",
+  "author": "v2vv",
+  "website": "https://github.com/v2vv/my-panel",
+  "repository": "https://github.com/v2vv/my-panel",
+  "image": "ghcr.io/v2vv/my-panel:latest",
+  "port": 3000,
+  "env": [
+    {
+      "name": "PORT",
+      "label": "Web 访问端口",
+      "default": "3000",
+      "description": "面板 WebUI 与 API 监听端口"
+    },
+    {
+      "name": "TUNNEL_TOKEN",
+      "label": "Cloudflare Tunnel Token",
+      "default": "",
+      "description": "可选：Cloudflare Zero Trust 隧道凭据，填入后自动开启公网 HTTPS 穿透"
+    },
+    {
+      "name": "TUNNEL_PROTOCOL",
+      "label": "穿透传输协议",
+      "default": "http2",
+      "description": "推荐 http2（TCP），避免 UDP/QUIC 丢包"
+    }
+  ]
+}

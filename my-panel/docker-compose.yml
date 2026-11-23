@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # My-Panel (BastionSSH) 极轻量现代 SSH / WebTTY / Docker 运维网关与管理面板后端
+  my-panel:
+    image: ghcr.io/v2vv/my-panel:latest
+    container_name: my-panel
+    restart: unless-stopped
+    # 端口映射（若使用 Host 模式请注释 ports 并启用 network_mode: host）
+    ports:
+      - "${PORT:-3000}:3000"
+    # 主机网络模式（可选推荐）：
+    # 与宿主机共享网络栈，能直接无缝免密/直连访问宿主机 127.0.0.1 的 SSH 服务
+    # network_mode: host
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # [可选] Cloudflare Tunnel Token
+      # 填入 Token 后，容器启动时将自动拉起内置的 cloudflared 建立安全公网穿透
+      # - TUNNEL_TOKEN=
+      # [可选] Cloudflare 传输协议：推荐锁定为 http2（强制使用 TCP，禁用 QUIC/UDP，解决国内运营商 QoS 阻断与断流）
+      # - TUNNEL_PROTOCOL=http2
+    volumes:
+      # 挂载宿主机 Docker Socket（允许面板管理宿主机 Docker 容器与应用商店模板）
+      - /var/run/docker.sock:/var/run/docker.sock
+      # 挂载应用配置与数据持久化目录
+      - ./data:/root/.config/bastionssh
+    # 允许容器通过 host.docker.internal 访问宿主机服务（网桥网络模式下生效）
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://127.0.0.1:3000/api/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))\""]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
